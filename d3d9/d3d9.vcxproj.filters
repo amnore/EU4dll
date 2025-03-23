@@ -21,6 +21,9 @@
     <ClCompile Include="filedl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <MASM Include="hook.asm">
+      <Filter>源文件</Filter>
+    </MASM>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="filedl.h">

@@ -13,19 +13,21 @@
 using namespace std;
 using namespace std::filesystem;
 
-struct
-{
-    HMODULE dll;
-    FARPROC Direct3DCreate9;
-    FARPROC Direct3DCreate9Ex;
-
-    void LoadOriginalLibrary(HMODULE module)
+extern "C" {
+    struct
     {
-        dll = module;
-        Direct3DCreate9 = GetProcAddress(module, "Direct3DCreate9");
-        Direct3DCreate9Ex = GetProcAddress(module, "Direct3DCreate9Ex");
-    }
-} d3d9meta;
+        HMODULE dll;
+        FARPROC Direct3DCreate9;
+        FARPROC Direct3DCreate9Ex;
+    
+        void LoadOriginalLibrary(HMODULE module)
+        {
+            dll = module;
+            Direct3DCreate9 = GetProcAddress(module, "Direct3DCreate9");
+            Direct3DCreate9Ex = GetProcAddress(module, "Direct3DCreate9Ex");
+        }
+    } d3d9meta;
+}
 
 void InitD3D9()
 {
@@ -82,7 +84,3 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, LPVOID reserved)
 
     return TRUE;
 }
-
-
-__declspec(naked) void _Direct3DCreate9() { _asm { jmp d3d9meta.Direct3DCreate9 } }
-__declspec(naked) void _Direct3DCreate9Ex() { _asm { jmp d3d9meta.Direct3DCreate9Ex } }
